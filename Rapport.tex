@@ -1,0 +1,201 @@
+\documentclass[a4paper,12pt]{report}
+\usepackage{geometry}
+\geometry{a4paper, top=-1cm, bottom=1in, left=0.5in, right=0.5in}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{bookmark}
+\usepackage{xcolor}
+\usepackage[utf8]{inputenc}  % Pour supporter les caractères UTF-8
+\usepackage[T1]{fontenc}      % Pour une meilleure gestion des caractères accentués
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage{atbegshi}  % Pour ajouter des éléments sur toutes les pages
+\usepackage{fancybox}
+\usepackage{mathpazo}
+\usepackage{titlesec}
+\usepackage{tcolorbox}
+\usepackage{caption}
+\usepackage{hyperref}
+\usepackage{tocloft}
+\usepackage{enumitem} % Pour personnaliser les puces
+\usepackage{amssymb} % Pour accéder aux symboles de type carré
+\usepackage{float}     % Pour utiliser l'option H dans les figures
+\usepackage[table]{xcolor} % Nécessaire pour les couleurs des tableaux
+\usepackage{tikz}
+\usepackage{pifont}   % Pour des symboles supplémentaires
+\usepackage{background}
+
+
+
+% Configuration par défaut : pas de fond
+\backgroundsetup{
+  scale=0.5,
+  color=black,
+  opacity=0.2,
+  angle=0,
+  vshift=-2cm, % Décalage vertical
+  contents={}
+}
+
+% Commande pour activer le fond uniquement pour une section précise
+\newcommand{\EnableIntroBackground}{
+  \backgroundsetup{
+    contents={\includegraphics[width=\paperwidth,height=\paperheight]{joli devops.png}}
+  }
+}
+
+% Commande pour désactiver le fond (par défaut pour toutes les autres pages)
+\newcommand{\DisableBackground}{
+  \backgroundsetup{
+    contents={}
+  }
+}
+
+\lstdefinelanguage{HCL}{
+  morekeywords={resource, provider, variable, output, module, data, terraform},
+  sensitive=true,
+  morecomment=[l][\color{green}]{\#},
+  morestring=[b]"'
+}
+
+
+\titleformat{\chapter}[block]
+  {\normalfont\bfseries\Huge} % Police, gras, taille (ajustez 'Huge' selon vos besoins)
+  {\begin{tcolorbox}[colback=blue!20, colframe=blue, sharp corners, boxrule=0.8mm, width=1.5cm, halign=center, nobeforeafter] \thechapter \end{tcolorbox}}{1em}{} % Fond coloré autour du numéro
+
+% Personnalisation de l'espacement entre le numéro et le titre
+\titleformat{\chapter}[hang]
+  {\normalfont\bfseries\Huge}
+  {\begin{tcolorbox}[colback=blue!20, colframe=blue, sharp corners, boxrule=0.8mm, width=1.5cm, halign=center, nobeforeafter] \thechapter \end{tcolorbox}}{1em}{}
+  [\titlerule] % Ajoute une règle sous le titre du chapitre
+
+
+% Définir les couleurs et les paramètres pour shadowbox
+\setlength{\shadowsize}{3pt} % Taille de l'ombre
+\setlength{\fboxsep}{10pt}   % Espace entre le texte et la boîte
+\setlength{\fboxrule}{1pt}   % Épaisseur de la bordure
+%\colorlet{shadowcolor}{black!40} % Couleur de l'ombre
+\colorlet{boxcolor}{blue!70}     % Couleur de la boîte
+
+
+
+% Définir une bordure sur toutes les pages
+\AtBeginShipout{\AtBeginShipoutAddToBox{%
+  \begin{tikzpicture}[remember picture,overlay,inner sep=0,outer sep=0]
+    % Bordure extérieure
+    \draw[blue!70!black, line width=4pt]
+      ([xshift=-0.8cm, yshift=-0.8cm]current page.north east) -- 
+      ([xshift=0.8cm, yshift=-0.8cm]current page.north west) -- 
+      ([xshift=0.8cm, yshift=0.8cm]current page.south west) -- 
+      ([xshift=-0.8cm, yshift=0.8cm]current page.south east) -- cycle;
+
+    % Bordure intérieure (1er niveau)
+    \draw[black!50, thin]
+      ([xshift=-1.1cm, yshift=-0.5cm]current page.north east) -- 
+      ([xshift=1.1cm, yshift=-0.5cm]current page.north west) -- 
+      ([xshift=1.1cm, yshift=0.5cm]current page.south west) -- 
+      ([xshift=-1.1cm, yshift=0.5cm]current page.south east) -- cycle;
+
+    % Bordure intérieure (2e niveau)
+    \draw[black!30, black]
+      ([xshift=-0.5cm, yshift=-1.1cm]current page.north east) -- 
+      ([xshift=0.5cm, yshift=-1.1cm]current page.north west) -- 
+      ([xshift=0.5cm, yshift=1.1cm]current page.south west) -- 
+      ([xshift=-0.5cm, yshift=1.1cm]current page.south east) -- cycle;
+  \end{tikzpicture}%
+}}
+
+% Définir le titre global
+\title{
+  \begin{minipage}{\textwidth}
+    \centering
+    \begin{minipage}{0.49\textwidth}
+      \centering
+      \includegraphics[width=2cm]{UCAD-removebg-preview.png} \par
+      {\color{blue}\footnotesize
+      \centering
+      Université Cheikh Anta Diop de Dakar \vspace{-1em} \newline
+      Faculté des Sciences et Techniques \vspace{-1em} \newline
+      Département Mathématiques et Informatique}
+          \end{minipage}
+    \hfill
+    \begin{minipage}{0.47\textwidth}
+      \centering
+      \vspace{-0.3em} % Diminue l'espacement vertical avant ce bloc
+      \includegraphics[width=2cm]{image.png} \par
+      {\color{blue}\footnotesize 
+        Laboratoire d'Algèbre de Cryptographie de\vspace{-1em} \newline 
+        Géométrie Algébrique et Applications \vspace{-1em} \newline 
+        LACGAA}
+    \end{minipage}
+  
+    \vspace{4em} % Ajout d'un espace après les images alignées
+    \par
+    {\normalsize  Licence 2, Transmission de Données et Sécurité de l'Information} \par
+    \vspace{1em}
+    
+    \shadowbox{\color{boxcolor}%
+      \begin{minipage}{0.9\textwidth}
+        \centering
+        \textbf{Thème :} \par
+        \vspace{0.5em}
+        \textbf{\color{black}Surveillance et Alerting des Applications en Production} 
+      \end{minipage}
+    }
+  \end{minipage}
+}
+\author{
+  \\[1em] Présenté et soutenu par \hspace{10em} Sous la direction de
+  \\ \textcolor{blue}{M. Mouhamad Al Amine Ba} \hspace{8em} \textcolor{blue}{Mme Diallo Aminata } \\[3em] 
+  \fcolorbox{blue}{gray!10}{\begin{minipage}{0.9\textwidth}  % Largeur du cadre ajustée
+    \begin{center} % Centrer uniquement le titre "Jury"
+      \textcolor{blue}{ \textbf{\huge Jury}} \\[1em] % Titre centré
+      \end{center}      \textcolor{blue}{President} :  Dr Demba sow \hspace{4.7cm}  \textcolor{blue}{ UCAD}  \\ 
+      \begin{tabbing}
+         \hspace{2.3cm} \= \hspace{3cm} \= \kill % Alignement des colonnes
+         \textcolor{blue}{Membres} : \> Dr Abdoulaye Thioune \hspace{3cm} \textcolor{blue}{ UCAD} \=  \\[0.5em]  
+         \> Cheikh Mbengue \hspace{4.36cm} \textcolor{blue}{ UCAD} \= \\[0.5em] 
+         \> Mme Aminata Diallo  \hspace{3.5cm} \textcolor{blue}{ UCAD}
+      \end{tabbing}
+    \end{minipage}} \\[7em]   
+    \textbf{Année académique 2023-2024}
+    }
+
+
+\begin{document}
+
+\date{} % Supprime la date
+
+\maketitle
+
+\newgeometry{top=2cm, bottom=1in, left=1in, right=1in}
+
+\renewcommand{\contentsname}{Table des matières}
+\renewcommand{\listfigurename}{Table des figures} % Renomme "List of Figures" en "Table des figures"
+\renewcommand{\listtablename}{Table des tableaux} % Renomme "List of Figures" en "Table des figures"
+
+
+\include{Preambule}
+
+\tableofcontents  % Table des matières
+\newpage
+\listoffigures % Liste des figures
+\newpage
+\listoftables % Liste des tables
+
+ %\include{First}
+
+\DisableBackground
+
+
+ %\include{chap1}
+
+% Exemple : Police personnalisée à 30pt
+% Espacement pour centrer le texte verticalement et horizontalement
+ %\include{chap2}
+ %\include{chap3}
+\include{End}
+
+\end{document}
